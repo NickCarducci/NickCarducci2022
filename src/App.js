@@ -3,7 +3,15 @@ import firebase from "./init-firebase.js";
 import "./styles.css";
 
 class App extends React.Component {
-  state = { signatures: [] };
+  state = {
+    signatures: [],
+    first: "",
+    middle: "",
+    last: "",
+    address: "",
+    city: "",
+    zip: ""
+  };
   componentDidMount = () => {
     firebase
       .firestore()
@@ -56,12 +64,12 @@ class App extends React.Component {
             onSubmit={(e) => {
               e.preventDefault();
               if (
-                this.state.first &&
-                this.state.middle &&
-                this.state.last &&
-                this.state.address &&
-                this.state.city &&
-                this.state.zip
+                this.state.first !== "" &&
+                this.state.middle !== "" &&
+                this.state.last !== "" &&
+                this.state.address !== "" &&
+                this.state.city !== "" &&
+                this.state.zip !== ""
               )
                 firebase
                   .firestore()
