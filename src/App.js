@@ -134,6 +134,42 @@ class App extends React.Component {
         <div>I am a civic tech entrepreneur, financial researcher</div>
         <div>& soon to be author of, "Banking is not a Business"</div>
         <br />
+        <div
+          style={{
+            width: "100%",
+            display: "flex",
+            alignItems: "center",
+            flexDirection: "column"
+          }}
+        >
+          <a
+            href="https://saverparty.xyz"
+            style={{
+              textDecoration: "none",
+              position: "relative",
+              height: "min-content",
+              border: "3px solid black",
+              width: "min-content"
+            }}
+          >
+            <img
+              style={{ width: "60px", height: "auto" }}
+              src="https://www.dl.dropboxusercontent.com/s/oi43wpcc0h9phcz/saverAcorn%20%281%29.png?dl=0"
+              alt=""
+            />
+          </a>
+          <a
+            href="https://saverparty.xyz"
+            style={{
+              textDecoration: "none",
+              fontSize: "15px",
+              marginTop: "4px"
+            }}
+          >
+            saverparty.xyz
+          </a>
+        </div>
+        <br />
         {/*<div
           style={{
             position: "relative",
