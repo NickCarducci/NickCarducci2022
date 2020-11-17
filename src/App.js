@@ -67,46 +67,66 @@ class App extends React.Component {
                 firebase
                   .firestore()
                   .collection("signatures")
-                  .add({
-                    first: this.state.first,
-                    middle: this.state.middle,
-                    last: this.state.last,
-                    address: this.state.address,
-                    city: this.state.city,
-                    zip: this.state.zip
-                  })
-                  .then(() => {
-                    this.setState({ finished: true });
-                    firebase
-                      .firestore()
-                      .collection("countData")
-                      .doc("only")
-                      .get()
-                      .then((doc) => {
-                        if (doc.exists) {
+                  .where("first", "==", this.state.first)
+                  .where("middle", "==", this.state.middle)
+                  .where("last", "==", this.state.last)
+                  .where("address", "==", this.state.address)
+                  .where("city", "==", this.state.city)
+                  .where("zip", "==", this.state.zip)
+                  .get()
+                  .then((doc) => {
+                    if (doc.exists) {
+                      window.alert("you've already signed this! 🎉");
+                    } else {
+                      firebase
+                        .firestore()
+                        .collection("signatures")
+                        .add({
+                          first: this.state.first,
+                          middle: this.state.middle,
+                          last: this.state.last,
+                          address: this.state.address,
+                          city: this.state.city,
+                          zip: this.state.zip
+                        })
+                        .then(() => {
+                          this.setState({ finished: true });
                           firebase
                             .firestore()
                             .collection("countData")
                             .doc("only")
-                            .update({
-                              count: firebase.firestore.FieldValue.increment(1)
-                            });
-                        } else {
-                          firebase
-                            .firestore()
-                            .collection("countData")
-                            .doc("only")
-                            .set({
-                              count: firebase.firestore.FieldValue.increment(1)
-                            });
-                        }
-                      })
-                      .then(() => {
-                        this.setState({ finished: true });
-                      })
-                      .catch((err) => console.log(err.message));
-                  })
-                  .catch((err) => console.log(err.message));
+                            .get()
+                            .then((doc) => {
+                              if (doc.exists) {
+                                firebase
+                                  .firestore()
+                                  .collection("countData")
+                                  .doc("only")
+                                  .update({
+                                    count: firebase.firestore.FieldValue.increment(
+                                      1
+                                    )
+                                  });
+                              } else {
+                                firebase
+                                  .firestore()
+                                  .collection("countData")
+                                  .doc("only")
+                                  .set({
+                                    count: firebase.firestore.FieldValue.increment(
+                                      1
+                                    )
+                                  });
+                              }
+                            })
+                            .then(() => {
+                              this.setState({ finished: true });
+                            })
+                            .catch((err) => console.log(err.message));
+                        })
+                        .catch((err) => console.log(err.message));
+                    }
+                  });
               } else
                 return window.alert(
                   "please complete required fields, all except middle name"
