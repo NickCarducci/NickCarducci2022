@@ -58,12 +58,12 @@ class App extends React.Component {
               e.preventDefault();
               if (
                 this.state.first !== "" &&
-                this.state.middle !== "" &&
                 this.state.last !== "" &&
                 this.state.address !== "" &&
                 this.state.city !== "" &&
                 this.state.zip !== ""
-              )
+              ) {
+                console.log("do");
                 firebase
                   .firestore()
                   .collection("signatures")
@@ -81,7 +81,8 @@ class App extends React.Component {
                       .firestore()
                       .collection("countData")
                       .doc("only")
-                      .onSnapshot((doc) => {
+                      .get()
+                      .then((doc) => {
                         if (doc.exists) {
                           firebase
                             .firestore()
@@ -106,6 +107,10 @@ class App extends React.Component {
                       .catch((err) => console.log(err.message));
                   })
                   .catch((err) => console.log(err.message));
+              } else
+                return window.alert(
+                  "please complete required fields, all except middle name"
+                );
             }}
           >
             <input
@@ -141,6 +146,7 @@ class App extends React.Component {
                 https://voter.svrs.nj.gov/registration-check
               </a>
             </div>
+            <button type="submit">submit</button>
           </form>
         )}
         <h2>"Invoices are theft!"</h2>
