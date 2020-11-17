@@ -4,7 +4,7 @@ import "./styles.css";
 
 class App extends React.Component {
   state = {
-    signatures: [],
+    signatures: 0,
     first: "",
     middle: "",
     last: "",
@@ -15,21 +15,14 @@ class App extends React.Component {
   componentDidMount = () => {
     firebase
       .firestore()
-      .collection("signatures")
-      .onSnapshot((querySnapshot) => {
-        let signatures = [];
-        let p = 0;
-        querySnapshot.docs.forEach((doc) => {
-          p++;
-          if (doc.exists) {
-            var foo = doc.data();
-            foo.id = doc.id;
-            signatures.push(foo);
-          }
-          if (querySnapshot.docs.length === p) {
-            this.setState({ signatures });
-          }
-        });
+      .collection("countData")
+      .doc("only")
+      .onSnapshot((doc) => {
+        if (doc.exists) {
+          var foo = doc.data();
+          foo.id = doc.id;
+          this.setState({ signatures: foo.count });
+        }
       });
   };
   render() {
@@ -56,7 +49,7 @@ class App extends React.Component {
           </div>
         </h1>
         <h2>Are you a New Jersey voter?</h2>
-        <h2>Submit your signature! {this.state.signatures.length}/800</h2>
+        <h2>Submit your signature! {this.state.signatures}/800</h2>
         {this.state.finished ? (
           <h2>Thank you!</h2>
         ) : (
@@ -84,6 +77,33 @@ class App extends React.Component {
                   })
                   .then(() => {
                     this.setState({ finished: true });
+                    firebase
+                      .firestore()
+                      .collection("countData")
+                      .doc("only")
+                      .onSnapshot((doc) => {
+                        if (doc.exists) {
+                          firebase
+                            .firestore()
+                            .collection("countData")
+                            .doc("only")
+                            .update({
+                              count: firebase.firestore.FieldValue.increment(1)
+                            });
+                        } else {
+                          firebase
+                            .firestore()
+                            .collection("countData")
+                            .doc("only")
+                            .set({
+                              count: firebase.firestore.FieldValue.increment(1)
+                            });
+                        }
+                      })
+                      .then(() => {
+                        this.setState({ finished: true });
+                      })
+                      .catch((err) => console.log(err.message));
                   })
                   .catch((err) => console.log(err.message));
             }}
