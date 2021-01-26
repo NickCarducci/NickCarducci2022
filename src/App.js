@@ -167,6 +167,10 @@ class App extends React.Component {
               </a>
             </div>
             <button type="submit">submit</button>
+            <div style={{ color: "grey", fontSize: "10px" }}>
+              this is on firebase but only shows you signed if you enter the
+              same info...
+            </div>
           </form>
         )}
         <h2>"Invoices are theft!"</h2>
