@@ -63,7 +63,7 @@ class App extends React.Component {
                 this.state.city !== "" &&
                 this.state.zip !== ""
               ) {
-                console.log("do");
+                /*console.log("do");
                 firebase
                   .firestore()
                   .collection("signatures")
@@ -76,56 +76,53 @@ class App extends React.Component {
                   .get()
                   .then((doc) => {
                     if (doc.exists) {
-                      window.alert("you've already signed this! 🎉");
-                    } else {
-                      firebase
-                        .firestore()
-                        .collection("signatures")
-                        .add({
-                          first: this.state.first,
-                          middle: this.state.middle,
-                          last: this.state.last,
-                          address: this.state.address,
-                          city: this.state.city,
-                          zip: this.state.zip
-                        })
-                        .then(() => {
-                          this.setState({ finished: true });
+                      window.alert("you've signed! 🎉");
+                    } else {*/
+                firebase
+                  .firestore()
+                  .collection("signatures")
+                  .add({
+                    first: this.state.first,
+                    middle: this.state.middle,
+                    last: this.state.last,
+                    address: this.state.address,
+                    city: this.state.city,
+                    zip: this.state.zip
+                  })
+                  .then(() => {
+                    this.setState({ finished: true });
+                    firebase
+                      .firestore()
+                      .collection("countData")
+                      .doc("only")
+                      .get()
+                      .then((doc) => {
+                        if (doc.exists) {
                           firebase
                             .firestore()
                             .collection("countData")
                             .doc("only")
-                            .get()
-                            .then((doc) => {
-                              if (doc.exists) {
-                                firebase
-                                  .firestore()
-                                  .collection("countData")
-                                  .doc("only")
-                                  .update({
-                                    count: firebase.firestore.FieldValue.increment(
-                                      1
-                                    )
-                                  });
-                              } else {
-                                firebase
-                                  .firestore()
-                                  .collection("countData")
-                                  .doc("only")
-                                  .set({
-                                    count: firebase.firestore.FieldValue.increment(
-                                      1
-                                    )
-                                  });
-                              }
-                            })
-                            .then(() => {
-                              this.setState({ finished: true });
-                            })
-                            .catch((err) => console.log(err.message));
-                        })
-                        .catch((err) => console.log(err.message));
-                    }
+                            .update({
+                              count: firebase.firestore.FieldValue.increment(1)
+                            });
+                        } else {
+                          firebase
+                            .firestore()
+                            .collection("countData")
+                            .doc("only")
+                            .set({
+                              count: firebase.firestore.FieldValue.increment(1)
+                            });
+                        }
+                      })
+                      .then(() => {
+                        window.alert("you've signed! 🎉");
+                        this.setState({ finished: true });
+                      })
+                      .catch((err) => {
+                        console.log(err.message);
+                        this.setState({ finished: true });
+                      });
                   });
               } else
                 return window.alert(
@@ -167,10 +164,10 @@ class App extends React.Component {
               </a>
             </div>
             <button type="submit">submit</button>
-            <div style={{ color: "grey", fontSize: "10px" }}>
+            {/*<div style={{ color: "grey", fontSize: "10px" }}>
               this is on firebase but only shows you signed if you enter the
               same info...
-            </div>
+          </div>*/}
           </form>
         )}
         <h2>"Invoices are theft!"</h2>
